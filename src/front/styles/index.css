@@ -1,3 +1,8 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+.pointer {
+    cursor: pointer;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
