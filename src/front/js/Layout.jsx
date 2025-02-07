@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import injectContext from "./store/appContext";
+import injectContext from "./store/appContext.js";
 // Custom component
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
-import { Contacts } from "./pages/Contacts.jsx";
-import { AddContact } from "./pages/AddContact.jsx";
-import { Evtols } from "./pages/Evtols.jsx";
 // Custom Pages or Views
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
+import { Contacts } from "./pages/Contacts.jsx";
+import { AddContact } from "./pages/AddContact.jsx";
+import { Evtols } from "./pages/Evtols.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
 
 

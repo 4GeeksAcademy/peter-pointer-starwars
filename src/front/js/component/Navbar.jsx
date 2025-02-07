@@ -1,7 +1,11 @@
-import React from "react";
+import React from "react"; // 1. import Hook
+// 2. import Context del appContext.js
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+	// 3. Desestructurar store y/o actions del objeto que está en flux utilizando el "context" de appContext.js
+
+	
 	return (
 		<nav className="navbar navbar-light bg-body-secondary">
 			<div className="container">

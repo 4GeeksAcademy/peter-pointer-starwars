@@ -1,3 +1,9 @@
+.domine-uniquifier {
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+
 .pointer {
     cursor: pointer;
 }
@@ -6,3 +12,25 @@
     bottom: 0;
     width: 100%;
   }
+
+.fa-edit:hover,
+.fa-trash:hover {
+  transform: scale(1.2);
+  transition: transform 0.1s ease-in-out;
+  cursor: pointer; 
+}
+
+.fa-edit:hover {
+  color:grey !important; 
+}
+
+.fa-trash:hover {
+  color: #dc3545 !important; 
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 8 px rgba(0,0,0,0.2);
+    transition: transform 0.1s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
