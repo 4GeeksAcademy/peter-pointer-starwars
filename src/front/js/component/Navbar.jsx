@@ -1,15 +1,16 @@
-import React from "react";
+import React from "react"; // 1. import Hook
+// 2. import Context del appContext.js
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+	// 3. Desestructurar store y/o actions del objeto que está en flux utilizando el "context" de appContext.js
+
+	
 	return (
 		<nav className="navbar navbar-light bg-body-secondary">
 			<div className="container">
 				<Link to="/">
-					<span className="navbar-brand mb-0 h1">Star Wars</span>
-				</Link>
-				<Link to="/evtols">
-				<button type="button" className="btn btn-outline-success">Evtols</button>
+					<span className="navbar-brand mb-0 h1"> <img src="https://starwars.chocobar.net/star-wars-logo.png" style={{ width: "auto", height: "55px" }} alt="profile picture" /> </span>
 				</Link>
 				<Link to="/contact">
 					<button type="button" className="btn btn-outline-primary">Agenda</button>
