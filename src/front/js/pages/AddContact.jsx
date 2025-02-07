@@ -4,9 +4,8 @@ import { Context } from "../store/appContext";
 
 
 export const AddContact = () => {
-    const { actions, store } = useContext(Context);
+    const { actions } = useContext(Context);
     const navigate = useNavigate()
-    const uri = `${store.base_url}/agendas/${store.user}/contacts`;
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -23,7 +22,7 @@ export const AddContact = () => {
             address
         };
 
-        actions.addContacts(newContact, uri)
+        actions.addContact(newContact)
         navigate("/contact");
     }
 

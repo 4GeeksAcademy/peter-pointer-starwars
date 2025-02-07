@@ -8,9 +8,7 @@ export const Contacts = () => {
 
 
   const handleDelete = (id) => {
-    const uri = `${store.base_url}/agendas/${store.user}/contacts/${id}`;
-    actions.deleteContacts(uri)
-
+    actions.deleteContact(id)
   }
 
   const handleEdit = (contact) => {
@@ -25,7 +23,7 @@ export const Contacts = () => {
         <h1 className="text-center domine-uniquifier ">Agenda</h1>
         <div className="d-flex justify-content-end">
           <Link to="/add-contact">
-            <button type="button" className="btn btn-success mb-3">Add contact</button>
+            <button type="button" className="btn btn-success mb-3">Add a new contact</button>
           </Link>
         </div>
         {store.contacts.map((item) => (
@@ -63,6 +61,5 @@ export const Contacts = () => {
         ))}
       </div>
     </div>
-
   )
 }

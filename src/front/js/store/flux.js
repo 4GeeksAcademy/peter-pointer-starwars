@@ -8,18 +8,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
       contacts: [],
       currentContacts: {},
-      base_url: "https://playground.4geeks.com/contact",
       user: "pedro88",
     },
     actions: {
       setCurrentContacts: (contact) => {
         setStore({ currentContacts: contact });
       },
-
-      // GET Method
       getContacts: async () => {
-		const storeLocal = getStore()      
-        const uri = `${storeLocal.base_url}/agendas/${storeLocal.user}/contacts`;
+        // GET Method
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user}/contacts`;
         const options = { method: "GET" };
         const response = await fetch(uri, options);
         if (!response.ok) {
@@ -29,9 +26,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         setStore({ contacts: data.contacts });
       },
-
-      // POST Method
-      addContacts: async (dataToSend, uri) => {
+      addContact: async (dataToSend) => {
+        // POST Method
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user}/contacts`;
         const options = {
           method: "POST",
           headers: {
@@ -46,15 +43,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         getActions().getContacts();
       },
-
-      // PUT Method
-      updateContacts: async (contact, uri) => {
+      updateContact: async (contact, id) => {
+        // PUT Method
+        const dataToSend = contact
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user}/contacts/${id}`;
         const options = {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(contact),
+          body: JSON.stringify(dataToSend),
         };
         const response = await fetch(uri, options);
         if (!response.ok) {
@@ -62,10 +60,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         getActions().getContacts();
+        setStore({ currentContacts: {} });
       },
-
-      // DELETE Method
-      deleteContacts: async (uri) => {
+      deleteContact: async (id) => {
+        // DELETE Method
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user}/contacts/${id}`;
         const options = { method: "DELETE" };
         const response = await fetch(uri, options);
         if (!response.ok) {
@@ -74,12 +73,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         getActions().getContacts();
       },
-
-      // Use getActions to call a function within a fuction
       exampleFunction: () => {
+        // Use getActions to call a function within a fuction
         getActions().changeColor(0, "green");
       },
-
       getMessage: async () => {
         try {
           // fetching data from the backend

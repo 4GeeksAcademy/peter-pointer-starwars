@@ -7,7 +7,6 @@ export const EditContact = () => {
     const { store, actions } = useContext(Context);
     const person = store.currentContacts;
     const navigate = useNavigate()
-    const uri = `${store.base_url}/agendas/${store.user}/contacts/${person.id}`;
 
     const [name, setName] = useState(person.name);
     const [email, setEmail] = useState(person.email);
@@ -15,16 +14,14 @@ export const EditContact = () => {
     const [address, setAddress] = useState(person.address);
 
     const handleSave = () => {
-        const updatedContact = {
+        const dataToSend = {
             name,
             email,
             phone,
-            address,
-            id: person.id
+            address            
         };
 
-        actions.setCurrentContacts(updatedContact)
-        actions.updateContacts(store.currentContacts, uri);
+        actions.updateContact(dataToSend, person.id);
         navigate("/contact");
     };
 
