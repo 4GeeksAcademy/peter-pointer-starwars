@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext.js";
+import { Context } from "../../store/appContext.js";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -18,7 +18,7 @@ export const EditContact = () => {
             name,
             email,
             phone,
-            address            
+            address
         };
 
         actions.updateContact(dataToSend, person.id);
@@ -27,7 +27,7 @@ export const EditContact = () => {
 
 
     return (
-        <form className="container rounded bg-body-secondary mt-4 fw-medium">
+        <form className="container rounded bg-dark mt-4 fw-medium">
             <div className="container mt-5">
                 <h2 className="text-center pt-3">Edit contact</h2>
                 <div className="row mb-3">

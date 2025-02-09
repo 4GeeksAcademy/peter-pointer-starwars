@@ -10,9 +10,12 @@ import { Footer } from "./component/Footer.jsx";
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
-import { Contacts } from "./pages/Contacts.jsx";
-import { AddContact } from "./pages/AddContact.jsx";
-import { EditContact } from "./pages/EditContact.jsx";
+import { Contacts } from "./pages/contacts/Contacts.jsx";
+import { AddContact } from "./pages/contacts/AddContact.jsx";
+import { EditContact } from "./pages/contacts/EditContact.jsx";
+import { Characters } from "./pages/starwars/Characters.jsx"
+import { Planets } from "./pages/starwars/Planets.jsx";
+import { Starships } from "./pages/starwars/Starships.jsx";
 
 
 // Create your first component
@@ -20,10 +23,10 @@ const Layout = () => {
     // The basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
-        <div>
+        <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
@@ -33,8 +36,12 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Contacts />} path="/contact" />
                         <Route element={<AddContact />} path="/add-contact" />
-                        <Route element={<EditContact/>} path="/edit-contact"/>
-                        <Route element={<h1>Not found!</h1>} path="*"/>
+                        <Route element={<EditContact />} path="/edit-contact" />
+                        <Route element={<Characters />} path="/characters" />
+                        <Route element={<Planets />} path="/planets" />
+                        <Route element={<Starships />} path="/starships" />
+
+                        <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

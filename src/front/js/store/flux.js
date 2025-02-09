@@ -9,8 +9,44 @@ const getState = ({ getStore, getActions, setStore }) => {
       contacts: [],
       currentContacts: {},
       user: "pedro88",
+      characters: [],
+      planets: [],
+      starships: [],
     },
     actions: {
+      getCharacters: async () => {
+        const uri = `${process.env.STARWARS_URL}people/`;
+        const options = { method: "GET"};
+        const response = await fetch (uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response. statusText);
+          return;
+        }
+        const data = await response.json();
+        setStore({ characters: data.results })
+      },
+      getPlanets: async () => {
+        const uri = `${process.env.STARWARS_URL}planets/`;
+        const options = { method: "GET"};
+        const response = await fetch (uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response. statusText);
+          return;
+        }
+        const data = await response.json();
+        setStore({ planets: data.results }) 
+      },
+      getStarships: async () => {
+        const uri = `${process.env.STARWARS_URL}starships/`;
+        const options = { method: "GET"};
+        const response = await fetch (uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response. statusText);
+          return;
+        }
+        const data = await response.json();
+        setStore({ starships: data.results }) 
+      },
       setCurrentContacts: (contact) => {
         setStore({ currentContacts: contact });
       },
