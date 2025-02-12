@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { Context } from "../../store/appContext";
 
 
 export const AddContact = () => {
@@ -29,7 +29,7 @@ export const AddContact = () => {
 
     return (
 
-        <form onSubmit={handleSubmitAdd} className="container rounded bg-body-secondary mt-4 fw-medium">
+        <form onSubmit={handleSubmitAdd} className="container rounded bg-dark mt-4 fw-medium">
             <div className="container mt-5">
                 <h2 className="text-center pt-3">Add a new contact</h2>
                 <div className="row mb-3">

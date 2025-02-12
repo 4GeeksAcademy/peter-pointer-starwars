@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../store/appContext.js";
+import { Context } from "../../store/appContext.js";
 
 export const Contacts = () => {
   const { store, actions } = useContext(Context)
@@ -12,13 +12,13 @@ export const Contacts = () => {
   }
 
   const handleEdit = (contact) => {
-    actions.setCurrentContacts(contact,);
+    actions.setCurrentContacts(contact);
     navigate("/edit-contact");
   }
 
   return (
 
-    <div className="container bg-body-secondary rounded mt-5 p-2">
+    <div className="container bg-dark rounded mt-5 p-2">
       <div className="container mt-4">
         <h1 className="text-center domine-uniquifier ">Agenda</h1>
         <div className="d-flex justify-content-end">
@@ -27,7 +27,7 @@ export const Contacts = () => {
           </Link>
         </div>
         {store.contacts.map((item) => (
-          <div key={item.id} className="card mb-3 bg-warning-subtle fw-medium">
+          <div key={item.id} className="card mb-3 bg-light fw-medium">
             <div className="row g-0">
               <div className="col-md-4 d-flex justify-content-center align-item-center m-auto">
                 <img src={`https://randomuser.me/api/portraits/lego/${Math.floor(Math.random() * 9)}.jpg`} style={{ width: "auto", height: "150px" }} className="rounded" alt="profile picture" />
@@ -42,7 +42,7 @@ export const Contacts = () => {
                       <i className="fa fa-trash text-danger pointer"></i>
                     </span>
                   </div>
-                  <h5 className="card-title mb-3">{item.name}</h5>
+                  <h5 className="card-title text-secondary fw-bold mb-3">{item.name}</h5>
                   <p className="card-text text-secondary">
                     <span className="fa fa-location-dot me-3"></span>
                     {item.address}</p>

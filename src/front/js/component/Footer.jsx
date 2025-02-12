@@ -8,8 +8,8 @@ export const Footer = () => {
 
 
   return (
-    <footer className="footer bg-body-secondary mt-3 py-3 text-center fw-medium">
-      <p>
+    <footer className="mt-auto">
+      <p className="mt-3 text-center fw-medium">
         Made with <i className="fa fa-heart text-danger" /> by Pedro!
       </p>
     </footer>

@@ -1,3 +1,7 @@
+body {
+  background: black;
+
+}
 .domine-uniquifier {
     font-optical-sizing: auto;
     font-weight: 500;
@@ -7,11 +11,6 @@
 .pointer {
     cursor: pointer;
 }
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
 
 .fa-edit:hover,
 .fa-trash:hover {
