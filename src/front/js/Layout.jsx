@@ -16,6 +16,9 @@ import { EditContact } from "./pages/contacts/EditContact.jsx";
 import { Characters } from "./pages/starwars/Characters.jsx"
 import { Planets } from "./pages/starwars/Planets.jsx";
 import { Starships } from "./pages/starwars/Starships.jsx";
+import { GetCharacter } from "./pages/starwars/GetCharacter.jsx";
+import { GetPlanet } from "./pages/starwars/GetPlanet.jsx";
+import { GetStarhip } from "./pages/starwars/GetStarship.jsx";
 
 
 // Create your first component
@@ -40,7 +43,11 @@ const Layout = () => {
                         <Route element={<Characters />} path="/characters" />
                         <Route element={<Planets />} path="/planets" />
                         <Route element={<Starships />} path="/starships" />
+                        <Route element={<GetCharacter />} path="/character" />
+                        <Route element={<GetPlanet />} path="/planet" />
+                        <Route element={<GetStarhip />} path="/starship" />        
 
+                        
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                     <Footer />

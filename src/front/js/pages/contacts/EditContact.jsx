@@ -32,7 +32,7 @@ export const EditContact = () => {
                 <h2 className="text-center pt-3">Edit contact</h2>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Full Name</label>
-                    <input type="email" className="form-control" id="colFormLabel" placeholder="Full Name"
+                    <input type="text" className="form-control" id="colFormLabel" placeholder="Full Name"
                         value={name} onChange={(event) => { setName(event.target.value) }} />
                 </div>
                 <div className="row mb-3">
@@ -42,12 +42,12 @@ export const EditContact = () => {
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Phone</label>
-                    <input type="email" className="form-control" id="colFormLabel" placeholder="Enter Phone"
+                    <input type="text" className="form-control" id="colFormLabel" placeholder="Enter Phone"
                         value={phone} onChange={(event) => { setPhone(event.target.value) }} />
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Address</label>
-                    <input type="email" className="form-control" id="colFormLabel" placeholder="Enter address"
+                    <input type="text" className="form-control" id="colFormLabel" placeholder="Enter address"
                         value={address} onChange={(event) => { setAddress(event.target.value) }} />
                 </div>
                 <div className="row d-flex justify-content-center">

@@ -12,14 +12,28 @@ const getState = ({ getStore, getActions, setStore }) => {
       characters: [],
       planets: [],
       starships: [],
+      character: {},
+      planet: {},
+      starship: {},
+      favorites: [],
     },
     actions: {
+      addFavorite: (item) => {
+        const store = getStore();
+        if (!store.favorites.some(fav => fav.uid === item.uid)) {
+          setStore({ favorites: [...store.favorites, item] });
+        }
+      },      
+      removeFavorite: (uid) => {
+        const store = getStore();
+        setStore({ favorites: store.favorites.filter(fav => fav.uid !== uid) });
+      },
       getCharacters: async () => {
         const uri = `${process.env.STARWARS_URL}people/`;
         const options = { method: "GET"};
         const response = await fetch (uri, options);
         if (!response.ok) {
-          console.log("Error:", response.status, response. statusText);
+          console.log("Error:", response.status, response.statusText);
           return;
         }
         const data = await response.json();
@@ -30,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const options = { method: "GET"};
         const response = await fetch (uri, options);
         if (!response.ok) {
-          console.log("Error:", response.status, response. statusText);
+          console.log("Error:", response.status, response.statusText);
           return;
         }
         const data = await response.json();
@@ -41,11 +55,47 @@ const getState = ({ getStore, getActions, setStore }) => {
         const options = { method: "GET"};
         const response = await fetch (uri, options);
         if (!response.ok) {
-          console.log("Error:", response.status, response. statusText);
+          console.log("Error:", response.status, response.statusText);
           return;
         }
         const data = await response.json();
         setStore({ starships: data.results }) 
+      },
+      getCharacter: async (uid) => {
+        const uri = `${process.env.STARWARS_URL}people/${uid}`;
+        const options = { method: "GET"};
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response.statusText);
+          return;
+        }
+        const data = await response.json();
+        data.result.properties.uid = uid
+        setStore({ character: data.result.properties}) 
+      },
+      getPlanet: async (uid) => {
+        const uri = `${process.env.STARWARS_URL}planets/${uid}`;
+        const options = { method: "GET"};
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response.statusText);
+          return;
+        }
+        const data = await response.json();
+        data.result.properties.uid = uid
+        setStore({ planet: data.result.properties}) 
+      },
+      getStarship: async (uid) => {
+        const uri = `${process.env.STARWARS_URL}starships/${uid}`;
+        const options = { method: "GET"};
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response.statusText);
+          return;
+        }
+        const data = await response.json();
+        data.result.properties.uid = uid
+        setStore({ starship: data.result.properties}) 
       },
       setCurrentContacts: (contact) => {
         setStore({ currentContacts: contact });
