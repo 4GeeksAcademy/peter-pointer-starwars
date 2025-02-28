@@ -23,8 +23,8 @@ class Users(db.Model):
                 "first_name": self.first_name,
                 "last_name": self.last_name}
     
-""" 
-class Products(db.Model):
+
+""" class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String, unique=False, nullable=True)
@@ -39,6 +39,8 @@ class Bills(db.Model):
     bill_address = db.Column(db.String)
     status = db.Column(db.Enum("pending", "paid", "cancel", name="status"), nullable=False)
     payment_method = db.Column(db.Enum("visa", "amex", "paypal", name="payment"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_to = db.relationship("Users", foreign_keys=[user_id], backref=db.backref("bills_to", lazy="select"))
 
 
 class BillItems(db.Model):
@@ -46,7 +48,12 @@ class BillItems(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     price_per_unit = db.Column(db.Float, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    total_price = db.Column(db.Float, nullable=False) """
+    total_price = db.Column(db.Float, nullable=False) 
+    bill_id = db.Column(db.Integer, db.ForeignKey("bills.id"))
+    bill_to = db.relationship("Bills", foreign_keys=[bill_id], backref=db.backref("bill_items", lazy="select"))
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
+    product_to = db.relationship("Products", foreign_keys=[product_id], backref=db.backref("bill_items", lazy="select")) """
+   
 
 
 class Medias(db.Model):
@@ -64,7 +71,10 @@ class Comments(db.Model):
 
 class Followers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    
+    following_id = db.Column(db.Integer, db.ForeignKey("users.id"))  # Columna de clave foranea 
+    following_to = db.relationship("Users", foreign_keys=[following_id], backref=db.backref("following_to", lazy="select"))  
+    follower_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    follower_to = db.relationship("Users", foreign_keys[follower_id], backref=db.backref("follower_to", lazy="select"))
 
 
 class Posts(db.Model):
@@ -75,19 +85,6 @@ class Posts(db.Model):
     body = db.Column(db.String, nullable=False)
     img_url = db.Column(db.String, nullable=False)
     
-
-
-class CharacterFavorites(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-   
-    
-
-
-class PlanetFavorites(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    
-    
-
 
 class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,3 +108,15 @@ class Planets(db.Model):
     population = db.Column(db.String, nullable=True)
     climate = db.Column(db.String, nullable=True)
     terrain = db.Column(db.String, nullable=True)
+
+
+class CharacterFavorites(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    
+    
+
+
+class PlanetFavorites(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    
+    
