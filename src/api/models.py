@@ -24,12 +24,21 @@ class Users(db.Model):
                 "last_name": self.last_name}
     
 
-""" class Products(db.Model):
+class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String, unique=False, nullable=True)
     price = db.Column(db.Float, nullable=False)
 
+    def __repr__(self):
+        return f"<Product: {self.name}>"
+
+    def serialize(self):
+        return {"id": self.id,
+                "name": self.name,
+                "description": self.description,
+                "price": self.price}
+    
 
 class Bills(db.Model):
     __tablename__ = "bills"
@@ -52,9 +61,8 @@ class BillItems(db.Model):
     bill_id = db.Column(db.Integer, db.ForeignKey("bills.id"))
     bill_to = db.relationship("Bills", foreign_keys=[bill_id], backref=db.backref("bill_items", lazy="select"))
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
-    product_to = db.relationship("Products", foreign_keys=[product_id], backref=db.backref("bill_items", lazy="select")) """
+    product_to = db.relationship("Products", foreign_keys=[product_id], backref=db.backref("bill_items", lazy="select"))
    
-
 
 class Medias(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -85,7 +93,7 @@ class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=True)
-    date = db.Column(db.DateTime, default=datetime)
+    date = db.Column(db.DateTime, default=datetime.utcnow())
     body = db.Column(db.String, nullable=False)
     img_url = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
