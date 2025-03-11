@@ -1,14 +1,20 @@
 import React, { useContext } from "react"; // 1. import Hook
 // 2. import Context del appContext.js
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
 	// 3. Desestructurar store y/o actions del objeto que está en flux utilizando el "context" de appContext.js
 	const { store, actions } = useContext(Context)
+	const navigate = useNavigate()
 
 	const handleDelete = (uid) => {
 		actions.removeFavorite(uid)
+	}
+
+	const hanldeLog = (isLoggedLocal) => {
+		if (isLoggedLocal) actions.logout()
+		navigate("/login")
 	}
 
 	return (
@@ -31,6 +37,13 @@ export const Navbar = () => {
 					<Link to="/contact" className="me-3">
 						<button type="button" className="btn btn-outline-warning">Contacts</button>
 					</Link>
+					{store.isLogged ? 
+						
+						<button onClick={() => hanldeLog(true)} type="button" className="btn btn-outline-warning me-3">Logout</button>
+						:
+						<button onClick={() => hanldeLog(false)} type="button" className="btn btn-outline-warning me-3">Login</button>
+					
+					}
 					<div className="dropdown">
 						<button className="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Favorites

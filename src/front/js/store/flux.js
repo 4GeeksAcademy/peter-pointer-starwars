@@ -16,8 +16,35 @@ const getState = ({ getStore, getActions, setStore }) => {
       planet: {},
       starship: {},
       favorites: [],
+      isLogged: false
     },
     actions: {
+      login: async (email, password) => {
+        const uri = `${process.env.BACKEND_URL}/api/login`;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({email, password}),
+        };
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.log("Error:", response.status, response.statusText);
+          return;
+        }
+        const data = await response.json()
+        setStore({
+          user: data.results.first_name,
+          isLogged: true
+        })
+        localStorage.setItem("access_token", data.access_token)
+        localStorage.setItem("user", JSON.stringify(data.result))
+      },
+      logout: () => {
+        setStore({isLogged:false})
+        localStorage.removeItem(["access_token", "user"])
+      },
       addFavorite: (item) => {
         const store = getStore();
         if (!store.favorites.some((fav) => fav.uid === item.uid)) {

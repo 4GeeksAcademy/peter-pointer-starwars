@@ -9,6 +9,7 @@ import requests
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt
 
 
 api = Blueprint('api', __name__)
@@ -37,28 +38,35 @@ def users():
 def login():
     response_body = {}
     data = request.json
-    email = request.json.get("email", None)
+    email = data.get("email", None)
     password = data.get("password", None)
     row = db.session.execute(db.select(Users).where(Users.email==email, Users.password==password, Users.is_active)).scalar()
-    # Si la consulta es exitosa, row tendrá algo (por lo tanto es verdadero), si no devuelve none
+    # Si la consulta es exitosa, row tendra algo (por lo tanto es verdadero), sino devuelve None
     if not row:
-        response_body["message"] = "Bad username or password"
+        response_body['message'] = "Bad username or password"
         return response_body, 401
+    user = row.serialize()
+    claims = {'user_id': user['id'],
+              'is_admin': user['is_admin']}
+    print(claims)
 
-    claims = {"user_id" : row[id]}    
-    access_token = create_access_token(identity=email)
-    response_body["message"] = "User logged!"
-    response_body["access_token"] = access_token
+    access_token = create_access_token(identity=email, additional_claims=claims) 
+    response_body['message'] = 'User logged!'
+    response_body['access_token'] = access_token
+    response_body["results"] = user
     return response_body, 200
 
 
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
     response_body = {}
     current_user = get_jwt_identity()
-    response_body['message'] = f'User logged: {current_user}'
+    additional_claims = get_jwt()  # Los datos adicionales
+    response_body['message'] = f'User logged: {current_user} - {additional_claims}'
     return response_body, 200
 
 

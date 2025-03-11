@@ -9,6 +9,7 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    is_admin = db.Column(db.Boolean(), nullable=False)
     first_name = db.Column(db.String, nullable=True)
     last_name = db.Column(db.String)
 
@@ -21,7 +22,8 @@ class Users(db.Model):
                 "email": self.email,
                 "is active": self.is_active,
                 "first_name": self.first_name,
-                "last_name": self.last_name}
+                "last_name": self.last_name,
+                "is_admin": self.is_admin}
     
 
 class Medias(db.Model):
@@ -92,6 +94,7 @@ class Planets(db.Model):
     diameter = db.Column(db.String)
     rotation_period = db.Column(db.String)
     orbital_period = db.Column(db.String)
+    surface_water = db.Column(db.String)
     gravity = db.Column(db.String)
     population = db.Column(db.String)
     climate = db.Column(db.String)

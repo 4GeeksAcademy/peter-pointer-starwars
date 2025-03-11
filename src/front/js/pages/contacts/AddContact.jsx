@@ -35,22 +35,22 @@ export const AddContact = () => {
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Full Name</label>
                     <input type="text" className="form-control" id="colFormLabel" placeholder="Full Name"
-                        value={name} onChange={(event) => { setName(event.target.value) }} />
+                        value={name} onChange={(event) => {setName(event.target.value)}} />
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Email</label>
                     <input type="email" className="form-control" id="colFormLabel" placeholder="Enter e-mail"
-                        value={email} onChange={(event) => { setEmail(event.target.value) }} />
+                        value={email} onChange={(event) => {setEmail(event.target.value)}} />
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Phone</label>
                     <input type="text" className="form-control" id="colFormLabel" placeholder="Enter Phone"
-                        value={phone} onChange={(event) => { setPhone(event.target.value) }} />
+                        value={phone} onChange={(event) => {setPhone(event.target.value)}} />
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="colFormLabel" className="form-label">Address</label>
                     <input type="text" className="form-control" id="colFormLabel" placeholder="Enter address"
-                        value={address} onChange={(event) => { setAddress(event.target.value) }} />
+                        value={address} onChange={(event) => {setAddress(event.target.value)}} />
                 </div>
                 <div className="row d-flex justify-content-center">
                     <button type="submit" className="btn btn-primary col-6 mb-3">Save</button>
