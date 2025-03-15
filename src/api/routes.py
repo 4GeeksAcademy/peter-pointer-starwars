@@ -16,7 +16,7 @@ api = Blueprint('api', __name__)
 CORS(api) # Allow CORS requests to this API
 
 
-@api.route("/users", methods=["GET"])
+@api.route('/users', methods=["GET"])
 def users():
     response_body = {}
     rows = db.session.execute(db.select(Users)).scalars()
@@ -34,6 +34,50 @@ def users():
 
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
+
+
+@api.route('/users', methods=['POST'])
+def register_user():
+    response_body = {}
+    data = request.json
+    
+    row = Users(first_name=data.get('first_name', ""), last_name=data.get('last_name', ""), email=data['email'], password=data['password'], is_admin=data.get('is_admin', False), is_active=data.get("is_active", True))
+    db.session.add(row)
+    db.session.commit()
+    
+    user = row.serialize()
+    claims = {'user_id': user['id'],
+              'is_admin': user['is_admin']}
+    print(claims)
+
+    access_token = create_access_token(identity=user["email"], additional_claims=claims)
+    response_body['message'] = 'User registered!'
+    response_body['access_token'] = access_token
+    response_body['results'] = user
+    return response_body, 200
+
+
+@api.route('/users', methods=['PUT'])
+@jwt_required()
+def edit_user():
+    response_body = {}
+    data = request.json
+    user_id = get_jwt()['user_id']
+    row = Users.query.get(user_id)
+    if not row:
+        response_body['message'] = 'User not found'
+        return response_body, 404
+    row.first_name = data.get('first_name', row.first_name)  
+    row.last_name = data.get('last_name', row.last_name)
+    row.email = data.get('email', row.email)
+    row.password = data.get('password', row.password) 
+    row.is_admin = data.get('is_admin', row.is_admin)
+    db.session.commit()
+    response_body['message'] = 'User edited'
+    response_body['results'] = row.serialize()
+    return response_body, 200
+
+
 @api.route("/login", methods=["POST"])
 def login():
     response_body = {}
@@ -68,6 +112,21 @@ def protected():
     additional_claims = get_jwt()  # Los datos adicionales
     response_body['message'] = f'User logged: {current_user} - {additional_claims}'
     return response_body, 200
+
+
+@api.route('/users/<int:user_id>', methods=['GET'])
+def user_id(user_id):
+    response_body = {}
+    url = f'https://jsonplaceholder.typicode.com/users/{user_id}'
+    response = requests.get(url)
+    print(response)
+    if response.status_code == 200:
+        data = response.json()
+        response_body['message'] = 'Un usuario'
+        response_body['results'] = data
+        return response_body, 200
+    response_body['message'] = 'algo salió'
+    return response_body, 400
 
 
 @api.route('/characters', methods=['GET'])

@@ -8,11 +8,13 @@ export const Navbar = () => {
 	const { store, actions } = useContext(Context)
 	const navigate = useNavigate()
 
+	const user = store.user
+
 	const handleDelete = (uid) => {
 		actions.removeFavorite(uid)
 	}
 
-	const hanldeLog = (isLoggedLocal) => {
+	const handleLog = (isLoggedLocal) => {
 		if (isLoggedLocal) actions.logout()
 		navigate("/login")
 	}
@@ -37,14 +39,7 @@ export const Navbar = () => {
 					<Link to="/contact" className="me-3">
 						<button type="button" className="btn btn-outline-warning">Contacts</button>
 					</Link>
-					{store.isLogged ? 
-						
-						<button onClick={() => hanldeLog(true)} type="button" className="btn btn-outline-warning me-3">Logout</button>
-						:
-						<button onClick={() => hanldeLog(false)} type="button" className="btn btn-outline-warning me-3">Login</button>
-					
-					}
-					<div className="dropdown">
+					<div className="dropdown me-3">
 						<button className="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Favorites
 							<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
@@ -57,8 +52,27 @@ export const Navbar = () => {
 								<li key={index}><span className="dropdown-item d-flex justify-content-between align-items-center">
 									{item.name}<i onClick={() => handleDelete(item.uid)} className="text-danger fa fa-trash"></i></span></li>
 							)}
-						</ul>
-					</div>
+						</ul>						
+					</div>			
+					{store.isLogged ? (
+						<>
+							<button onClick={() => navigate("/profile")} className="btn btn-warning me-3">
+								Welcome, {user.first_name}
+							</button>
+							<button onClick={handleLog} className="btn btn-outline-warning me-3">
+								Logout
+							</button>
+						</>
+					) : (
+						<>
+							<button onClick={() => navigate("/login")} className="btn btn-outline-warning me-3">
+								Login
+							</button>
+							<button onClick={() => navigate("/register")} className="btn btn-outline-warning me-3">
+								Register
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 		</nav>

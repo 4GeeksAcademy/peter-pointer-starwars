@@ -20,6 +20,8 @@ import { GetCharacter } from "./pages/starwars/GetCharacter.jsx";
 import { GetPlanet } from "./pages/starwars/GetPlanet.jsx";
 import { GetStarhip } from "./pages/starwars/GetStarship.jsx";
 import { Login } from "./pages/login/Login.jsx";
+import { Register } from "./pages/login/Register.jsx";
+import { Profile } from "./pages/login/Profile.jsx";
 
 
 // Create your first component
@@ -48,6 +50,8 @@ const Layout = () => {
                         <Route element={<GetPlanet />} path="/planet" />
                         <Route element={<GetStarhip />} path="/starship" />        
                         <Route element={<Login />} path="/login" />        
+                        <Route element={<Register />} path="/register" /> 
+                        <Route element={<Profile />} path="/profile/" />       
 
                         
                         <Route element={<h1>Not found!</h1>} path="*" />

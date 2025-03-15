@@ -8,7 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
       contacts: [],
       currentContacts: {},
-      user: "pedro88",
+      user: "",
       characters: [],
       planets: [],
       starships: [],
@@ -16,34 +16,160 @@ const getState = ({ getStore, getActions, setStore }) => {
       planet: {},
       starship: {},
       favorites: [],
-      isLogged: false
+      isLogged: false,
+      isAdmin: false,
+      alert: {text:'', visible: false, background: 'primary' },
     },
     actions: {
-      login: async (email, password) => {
+      setUser: (newUser) => { setStore({ user: newUser }) },
+      setAlert: (newAlert) => { setStore({ alert: newAlert }) },
+      setIsLogged: (value) => { setStore({ isLogged: value }) },
+      setIsAdmin: (value) => { setStore({ isAdmin: value }) },
+      login: async (dataToSend) => {
         const uri = `${process.env.BACKEND_URL}/api/login`;
         const options = {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "Application/json"
           },
-          body: JSON.stringify({email, password}),
+          body: JSON.stringify(dataToSend)
         };
-        const response = await fetch(uri, options);
+        const response = await fetch(uri, options)
         if (!response.ok) {
-          console.log("Error:", response.status, response.statusText);
-          return;
+          console.log('Error login:', response.status, response.statusText)
+          return
         }
-        const data = await response.json()
+        const data = await response.json();
         setStore({
-          user: data.results.first_name,
-          isLogged: true
+          user: data.results,
+          isAdmin: data.results.is_admin,
+          isLogged: true,
+          alert: { text: data.message, visible: true, background: 'success' },
         })
-        localStorage.setItem("access_token", data.access_token)
-        localStorage.setItem("user", JSON.stringify(data.result))
+        localStorage.setItem('token', data.access_token)
+        localStorage.setItem('user', JSON.stringify(data.results))
       },
       logout: () => {
-        setStore({isLogged:false})
-        localStorage.removeItem(["access_token", "user"])
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        //volver el store a valores de no logeado( user, is logged, is adim , alert)
+        getActions().setAlert({ text: '', visible: false, background: 'primary' });
+        setStore({
+          user: '',
+          isLogged: false,
+          isAdmin: false,
+          alert: { text: "User left!", visible: true, background: 'danger' },
+        })
+      },
+      register: async (dataToSend) => {
+        const uri = `${process.env.BACKEND_URL}/api/users`;
+        const options = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "Application/json"
+          },
+          body: JSON.stringify(dataToSend)
+        };
+        const response = await fetch(uri, options)
+        if (!response.ok) {
+          console.log('Error registering:', response.status, response.statusText)
+          return
+        }
+        const data = await response.json();
+        setStore({
+          user: data.results,
+          isAdmin: data.results.is_admin,
+          isLogged: true,
+          alert: { text: data.message, visible: true, background: 'success' },
+        })
+        localStorage.setItem('token', data.access_token)
+        localStorage.setItem('user', JSON.stringify(data.results))
+      },
+      getPost: async (postId) => {
+        const token = localStorage.getItem('token');
+        const uri = `${process.env.BACKEND_URL}/api/posts/${postId}`;
+        const options = {
+          method: 'GET',
+          headers: {
+            Authorization: `Berear ${token}`
+          }
+        }
+        const response = await fetch(uri, options)
+      },
+      updatePost: async (postId, dataToSend) => {
+        const token = localStorage.getItem('token');
+        const uri = `${process.env.BACKEND_URL}/api/posts/${postId}`;
+        const options = {
+          method: 'PUT',
+          headers: {
+            Authorization: `Berear ${token}`,
+            "Content-Type": 'application/json'
+          },
+          body: JSON.stringify(dataToSend)
+        }
+        const response = await fetch(uri, options)
+        if (!response.ok) {
+          console.log("Error", response.status, response.statusText);
+          return
+        }
+        const data = await response.json()
+      },
+      getUser: async (userId) => {
+        const token = localStorage.getItem('token');
+        const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
+        const options = {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dataToSend)
+        };
+
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.error('Error getting profile', response.status, response.statusText);
+          return;
+        }
+        const data = await response.json();
+      },
+      updateProfile: async (updatedUser) => {
+        const token = localStorage.getItem('token');
+        const uri = `${process.env.BACKEND_URL}/api/users`;
+        const options = {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "Application/json"
+          },
+          body: JSON.stringify(updatedUser)
+        };
+
+        const response = await fetch(uri, options);
+        if (!response.ok) {
+          console.error('Error editing profile', response.status, response.statusText);
+          return;
+        }
+
+        const data = await response.json();
+        setStore({user: data.results})
+      },
+      setCategory: (cat) => {
+        setStore({ category: cat })
+      },
+      setSelectedItem: (category, uid) => {
+        fetch(`${base}/${category}/${uid}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.result) {
+              setStore({ selectedItem: data.result.properties });
+            } else {
+              console.error("Invalid response from API", data);
+            }
+          })
+          .catch(error => console.error("Error fetching details:", error));
+
+
       },
       addFavorite: (item) => {
         const store = getStore();
@@ -131,9 +257,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getContacts: async () => {
         // GET Method
-        const uri = `${process.env.CONTACTS_URL}/agendas/${
-          getStore().user
-        }/contacts`;
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user
+          }/contacts`;
         const options = { method: "GET" };
         const response = await fetch(uri, options);
         if (!response.ok) {
@@ -145,9 +270,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       addContact: async (dataToSend) => {
         // POST Method
-        const uri = `${process.env.CONTACTS_URL}/agendas/${
-          getStore().user
-        }/contacts`;
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user
+          }/contacts`;
         const options = {
           method: "POST",
           headers: {
@@ -165,9 +289,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       updateContact: async (contact, id) => {
         // PUT Method
         const dataToSend = contact;
-        const uri = `${process.env.CONTACTS_URL}/agendas/${
-          getStore().user
-        }/contacts/${id}`;
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user
+          }/contacts/${id}`;
         const options = {
           method: "PUT",
           headers: {
@@ -185,9 +308,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       deleteContact: async (id) => {
         // DELETE Method
-        const uri = `${process.env.CONTACTS_URL}/agendas/${
-          getStore().user
-        }/contacts/${id}`;
+        const uri = `${process.env.CONTACTS_URL}/agendas/${getStore().user
+          }/contacts/${id}`;
         const options = { method: "DELETE" };
         const response = await fetch(uri, options);
         if (!response.ok) {
